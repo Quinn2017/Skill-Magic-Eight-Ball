@@ -25,13 +25,14 @@
 # skills, whether from other files in mycroft-core or from external libraries
 from os import listdir
 from os.path import dirname, isfile, join
+from random import randrange
 
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill
 from mycroft.util.log import getLogger
+from mycroft.util import play_mp3
 
-
-import random
+## Inspired by the Kathy Reid Malibu Stacy skill
 
 __author__ = 'Charles'
 
@@ -47,10 +48,13 @@ class EightBallSkill(MycroftSkill):
     # The constructor of the skill, which calls MycroftSkill's constructor
     def __init__(self):
         super(EightBallSkill, self).__init__(name="EightBallSkill")
+        self.process = None
+        self.theFiles = []
 
     # This method loads the files needed for the skill's functioning, and
     # creates and registers each intent that the skill uses
     def initialize(self):
+        self.load_data_files(dirname(__file__))
 
 #        get_eight_ball_intent = IntentBuilder("GetEightBallIntent").\
 #            require("GetEightBallKeyword").build()
@@ -71,13 +75,23 @@ class EightBallSkill(MycroftSkill):
     # of a file in the dialog folder, and Mycroft speaks its contents when
     # the method is called.
     def handle_question_intent(self, message):
-        answer = ['as I see it yes', 'ask again later', 'better not tell you now', 'cannot predict now', 'concentrate and ask again', 'dont count on it', 'it is certain', 'it is decidedly so', 'most likely', 'my reply is no', 'my sources say no', 'outlook good', 'outlook not so good', 'reply hazy, try again', 'signs point to yes', 'very doubtful', 'without a doubt', 'yes definitely', 'yes', 'you may rely on it']
-        self.speak(random.choice(answer))
-        
+
+        self.load_data_files(dirname(__file__))
+
+        # Create an array of the .mp3 files in the mp3 directory
+        for name in listdir(join(dirname(__file__), "dialog")):
+            self.theFiles.append(name)
+
+        # Randomly select one of the array of mp3 files to play and play it
+        index = randrange(0, len(self.theFiles))
+        self.process = speak_dialog(join(dirname(__file__), "dialog", self.theFiles[index]))
+
     # The "stop" method defines what Mycroft does when told to stop during
     # the skill's execution.
     def stop(self):
-        pass
+        if self.process and self.process.poll() is None:
+            self.process.terminate()
+            self.process.wait()
 
 # The "create_skill()" method is used to create an instance of the skill.
 # Note that it's outside the class itself.
