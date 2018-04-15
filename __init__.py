@@ -52,17 +52,17 @@ class EightBallSkill(MycroftSkill):
     # creates and registers each intent that the skill uses
     def initialize(self):
 
-#        get_eight_ball_intent = IntentBuilder("GetEightBallIntent").\
-#            require("GetEightBallKeyword").build()
-#        self.register_intent(get_eight_ball_intent, self.handle_get_eight_ball_intent)
+        ball_intent = IntentBuilder("BallIntent").\
+            require("BallKeyword").build()
+        self.register_intent(ball_intent, self.handle_ball_intent)
 
         question_intent = IntentBuilder("QuestionIntent").\
             require("QuestionKeyword").build()
         self.register_intent(question_intent, self.handle_question_intent)
 
-#        put_away_intent = IntentBuilder("PutAwayIntent").\
-#            require("PutAwayKeyword").build()
-#        self.register_intent(put_away_intent, self.handle_put_away_intent)
+        done_intent = IntentBuilder("DoneIntent").\
+            require("DoneKeyword").build()
+        self.register_intent(done_intent, self.handle_done_intent)
 
     # The "handle_xxxx_intent" functions define Mycroft's behavior when
     # each of the skill's intents is triggered: in this case, he simply
@@ -70,10 +70,20 @@ class EightBallSkill(MycroftSkill):
     # actually speak the text it's passed--instead, that text is the filename
     # of a file in the dialog folder, and Mycroft speaks its contents when
     # the method is called.
+
+    def handle_ball_intent(self, message):
+        self.speak('I have retrieved your magic eight ball. What do you want to ask it?')
+#        TODO: FIX CONTEXTS (THEY DON'T STICK) self.set_context("GetEightBallKeyword", "Eightball")
+
     def handle_question_intent(self, message):
         answer = ['as I see it yes', 'ask again later', 'better not tell you now', 'cannot predict now', 'concentrate and ask again', 'dont count on it', 'it is certain', 'it is decidedly so', 'most likely', 'my reply is no', 'my sources say no', 'outlook good', 'outlook not so good', 'reply hazy, try again', 'signs point to yes', 'very doubtful', 'without a doubt', 'yes definitely', 'yes', 'you may rely on it']
         self.speak(random.choice(answer))
-        
+#        TODO: FIX CONTEXTS (THEY DON'T STICK) self.remove_context("GetEightBallKeyword", "Eightball")
+
+    def handle_done_intent(self, message):
+        self.speak('Alright, lets put the magic eight ball away.')
+#        TODO: FIX CONTEXTS (THEY DON'T STICK) self.remove_context("PredictionKeyword")
+
     # The "stop" method defines what Mycroft does when told to stop during
     # the skill's execution.
     def stop(self):
