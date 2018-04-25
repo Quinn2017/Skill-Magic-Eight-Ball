@@ -1,6 +1,7 @@
 # skill-magic-eight-ball
-WIP - Work in progress
-A classic game where you ask your magic eigh ball a question, shake it, and have an answer returned using random python import. 
+A classic game where you ask magic eigh ball a question, shake it, and have an answer returned using random python import.
+
+Note: No shaking your Mycroft required, and probably not recommended. 
 
 There are a total of 20 possible answers (10 affirmative; 5 non-committal; and 5 negative). 
 
@@ -26,16 +27,15 @@ There are a total of 20 possible answers (10 affirmative; 5 non-committal; and 5
 'You may rely on it'
 
 ## Current state
-WIP - Work in progress
+Working
 
 ## Usage
-Mycroft, can you get my magic eight ball please?
-Mycroft, should I delete my Facebook account? [insert a yes-no question about the future]. 
-Mycroft, done.
+"Mycroft, can you get my magic eight ball please?"
+"Magic eight ball, should I delete my Facebook account? [insert a yes-no question about the future]."
+"Can you put away the eight ball please".
 
 ## Requirements
 No technical requirements.
 
 ## Todo
-- Make contexts stick.  
-https://mycroft.ai/documentation/skills/conversational-context/
+Study alternate random events and methods. 
